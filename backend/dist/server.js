@@ -15,7 +15,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 // Middleware
 app.use((0, cors_1.default)({
-    origin: "http://localhost:4321",
+    origin: "http://localhost:5173",
     credentials: true,
 }));
 app.use((0, cookie_session_1.default)({

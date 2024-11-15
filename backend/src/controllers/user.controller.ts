@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import userModel from "../models/user.model";
 import { User } from "../types/user";
 import bcrypt from "bcrypt";
@@ -40,7 +40,7 @@ const registerUser = async (
 
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = userModel.create({ username, password: hashedPassword });
-  
+
   res.status(201).json(user);
 };
 
@@ -77,6 +77,15 @@ const loginUser = async (
   res.json({ message: "Login successful" });
 };
 
+// checklogin
+const checkLogin = async (req: Request, res: Response) => {
+  if (req.session.isAuthenticated) {
+    res.json({ loggedIn: true, userId: req.session.userId });
+  } else {
+    res.json({ loggedIn: false });
+  }
+};
+
 // // profile
 // const userProfile = (req: Request, res: Response) => {
 //   const { userId } = req.session;
@@ -91,7 +100,7 @@ const loginUser = async (
 // logout
 const logoutUser = (req: Request, res: Response) => {
   req.session = { isAuthenticated: false, userId: "" };
-  res.send();
+  res.send({ message: `Lodded out successful` });
 };
 
 export default {
@@ -99,6 +108,7 @@ export default {
   getUserById,
   registerUser,
   loginUser,
+  checkLogin,
   // userProfile,
   logoutUser,
 };

@@ -10,6 +10,41 @@ const getBlogs = (req, res) => {
     const blogs = blog_model_1.default.findAll(userId);
     res.json(blogs);
 };
+/*
+// Get blogs with pagination
+const getBlogs = (req: Request, res: Response): void => {
+  const { userId } = req.session;
+  const { page = 1, limit = 10 } = req.query;
+
+  const pageNumber = parseInt(page as string, 10);
+  const limitNumber = parseInt(limit as string, 10); // 1ページあたりの件数
+
+  if (pageNumber < 1 || limitNumber < 1) {
+    res.status(400).json({ error: "Page and limit must be positive integers." });
+    return;
+  }
+
+  // 全てのブログデータを取得
+  const allBlogs = blogModel.findAll(userId);
+
+  // ページネーションの開始と終了インデックスを計算
+  const startIndex = (pageNumber - 1) * limitNumber;
+  const endIndex = startIndex + limitNumber;
+
+  // 現在のページのデータをスライス
+  const blogs = allBlogs.slice(startIndex, endIndex);
+
+  // 総ページ数を計算
+  const totalPages = Math.ceil(allBlogs.length / limitNumber);
+
+  res.json({
+    currentPage: pageNumber,
+    totalPages,
+    totalItems: allBlogs.length,
+    items: blogs,
+  });
+};
+*/
 // Get blog by id
 const getBlogById = (req, res) => {
     const { id } = req.params;

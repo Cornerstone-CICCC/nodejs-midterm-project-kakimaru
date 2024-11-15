@@ -69,6 +69,15 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     req.session.userId = user.id;
     res.json({ message: "Login successful" });
 });
+// checklogin
+const checkLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.session.isAuthenticated) {
+        res.json({ loggedIn: true, userId: req.session.userId });
+    }
+    else {
+        res.json({ loggedIn: false });
+    }
+});
 // // profile
 // const userProfile = (req: Request, res: Response) => {
 //   const { userId } = req.session;
@@ -82,13 +91,14 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // logout
 const logoutUser = (req, res) => {
     req.session = { isAuthenticated: false, userId: "" };
-    res.send();
+    res.send({ message: `Lodded out successful` });
 };
 exports.default = {
     getUsers,
     getUserById,
     registerUser,
     loginUser,
+    checkLogin,
     // userProfile,
     logoutUser,
 };

@@ -9,6 +9,7 @@ userRouter.get("/list/:id", userController.getUserById);
 userRouter.post("/register", userController.registerUser);
 userRouter.post("/login", userController.loginUser);
 // userRouter.get("/profile", checkAuth, userController.userProfile);
+userRouter.get("/check-login", userController.checkLogin);
 userRouter.get("/logout", checkAuth, userController.logoutUser);
 
 export default userRouter;
