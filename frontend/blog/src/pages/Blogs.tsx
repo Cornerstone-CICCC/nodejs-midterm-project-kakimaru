@@ -27,7 +27,7 @@ export default function Blogs() {
   );
 
   return (
-    <div className="mx-auto grid w-full max-w-6xl px-6">
+    <div className="mx-auto grid w-full max-w-5xl px-6">
       {blogs.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-10 py-32">
           <h1 className="text-center text-xl font-bold">
@@ -42,7 +42,7 @@ export default function Blogs() {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid gap-6 md:grid-cols-3">
           {blogs.map((blog) => (
             <BlogCard key={blog.id} blog={blog} />
           ))}

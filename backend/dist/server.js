@@ -10,7 +10,9 @@ const cookie_session_1 = __importDefault(require("cookie-session"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const blog_routes_1 = __importDefault(require("./routes/blog.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
+const path_1 = __importDefault(require("path"));
 dotenv_1.default.config();
+const FRONTEND_DIST_PATH = path_1.default.join(__dirname, '../frontend/dist');
 // Create server
 const app = (0, express_1.default)();
 // Middleware
@@ -31,6 +33,10 @@ app.use(express_1.default.urlencoded({ extended: true }));
 // Routes
 app.use("/blogs", blog_routes_1.default);
 app.use("/users", user_routes_1.default);
+// for SPA
+app.get('/*', (req, res) => {
+    res.sendFile(path_1.default.join(FRONTEND_DIST_PATH, 'index.html'));
+});
 // 404 Fallback
 app.use((req, res) => {
     res.status(404).send("Access denied");

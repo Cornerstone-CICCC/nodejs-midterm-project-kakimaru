@@ -56,7 +56,7 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
         <h2 className="line-clamp-1 break-all text-lg font-bold text-slate-700">
           {blog.title}
         </h2>
-        <p className="line-clamp-2 break-all text-sm text-slate-500">
+        <p className="line-clamp-2 whitespace-pre-wrap break-all text-sm text-slate-500">
           {blog.content}
         </p>
       </div>

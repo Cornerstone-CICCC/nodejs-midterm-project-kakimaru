@@ -4,7 +4,10 @@ import cookieSession from "cookie-session";
 import dotenv from "dotenv";
 import blogRouter from "./routes/blog.routes";
 import userRouter from "./routes/user.routes";
+import path from "path";
 dotenv.config();
+
+const FRONTEND_DIST_PATH = path.join(__dirname, '../frontend/dist');
 
 // Create server
 const app = express();
@@ -34,6 +37,11 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/blogs", blogRouter);
 app.use("/users", userRouter);
+
+// for SPA
+app.get('/*', (req: Request, res: Response) => {
+  res.sendFile(path.join(FRONTEND_DIST_PATH, 'index.html'));
+});
 
 // 404 Fallback
 app.use((req: Request, res: Response) => {

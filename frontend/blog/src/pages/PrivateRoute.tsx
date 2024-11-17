@@ -1,16 +1,18 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 
-const PrivateRoute: React.FC<{children: ReactNode}> = ({children}) => {
+const PrivateRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { isLoggedIn } = useAuth();
 
+  useEffect(
+    function () {
+      if (!isLoggedIn) <Navigate to="/" />;
+    },
+    [isLoggedIn],
+  );
 
-  if(!isLoggedIn) {
-    return  <Navigate to='/404' />
-  }
+  if (isLoggedIn) return children;
+};
 
-  return <>{children}</>;
-}
-
-export default PrivateRoute
+export default PrivateRoute;
