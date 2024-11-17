@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import BlogDetail from './pages/BlogDetail';
 import Home from './pages/Home';
@@ -79,15 +76,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-
   return (
-    <BlogsProvider>
-      <BlogProvider>
-        <AuthProvider>
+    <AuthProvider>
+      <BlogsProvider>
+        <BlogProvider>
           <RouterProvider router={router} />
-        </AuthProvider>
-      </BlogProvider>
-    </BlogsProvider>
+        </BlogProvider>
+      </BlogsProvider>
+    </AuthProvider>
   );
 }
 

@@ -2,12 +2,14 @@ import { IoTrashOutline } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { Blog } from '../types/blog';
 import { useState } from 'react';
+import { useBlogs } from '../context/BlogsContext';
 
 type BlogProps = {
   blog: Blog;
 };
 
 const BlogCard: React.FC<BlogProps> = ({ blog }) => {
+  const { blogs, setBlogs } = useBlogs();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,12 +19,17 @@ const BlogCard: React.FC<BlogProps> = ({ blog }) => {
     if (window.confirm(`Are you sure you want to delete this blog?`)) {
       try {
         setIsLoading(true);
-        const res = await fetch(`http://localhost:3000/blogs/delete/${blog.id}`, {
-          method: 'DELETE',
-          credentials: 'include',
-        });
+        const res = await fetch(
+          `http://localhost:3000/blogs/delete/${blog.id}`,
+          {
+            method: 'DELETE',
+            credentials: 'include',
+          },
+        );
 
         if (res.ok) {
+          const updatedBlogs = blogs.filter((b) => b.id !== blog.id);
+          setBlogs(updatedBlogs);
           alert(`Blog deleted successfully!`);
           navigate('/blogs');
         } else {

@@ -13,7 +13,7 @@ export default function Login() {
     password: '',
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const {isLoggedIn, setIsLoggedIn} = useAuth()
+  const {isLoggedIn, login} = useAuth()
   const navigate = useNavigate();
 
   useEffect(function() {
@@ -33,29 +33,9 @@ export default function Login() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     setIsSubmitting(true);
-
-    try {
-      const res = await fetch(`http://localhost:3000/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      console.log(data)
-
-      if (res.ok) {
-        setIsLoggedIn(true)
-        navigate('/blogs');
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSubmitting(false);
-    }
+    await login(formData)
+    navigate('/blogs')
+    setIsSubmitting(false);
   }
   return (
     <div className="px-6 grid max-w-md w-full mx-auto">

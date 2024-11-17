@@ -1,56 +1,78 @@
 import { useOutletContext } from 'react-router-dom';
 import { Blog } from '../types/blog';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 type BlogData = Omit<Blog, 'userId'>;
 
 export default function AddBlog() {
-  const { blogData, setBlogData } = useOutletContext<{
-    blogData: BlogData;
-    setBlogData: React.Dispatch<React.SetStateAction<BlogData>>;
+  const { newBlogData, setNewBlogData } = useOutletContext<{
+    newBlogData: BlogData;
+    setNewBlogData: React.Dispatch<React.SetStateAction<BlogData>>;
   }>();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(
     function () {
-      setBlogData({
+      setNewBlogData({
         id: '',
         title: '',
         content: '',
         published: false,
       });
     },
-    [setBlogData],
+    [setNewBlogData],
   );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setBlogData((prev) => ({
+    setNewBlogData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const handleInput = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && e.metaKey === false && e.shiftKey === false) {
+      e.preventDefault();
+    }
+  };
+
   return (
-    <form method="POST" className="gap gap-4 py-16">
-      <div className="p-4">
+    <form
+      method="POST"
+      className="gap mx-auto grid w-full max-w-5xl gap-4 px-6"
+    >
+      <div>
         <input
           type="text"
           name="title"
           placeholder="Title"
-          className="text-xl"
+          className="text-xl w-full p-2 focus:outline-none focus:border-transparent"
           onChange={handleChange}
-          value={blogData.title}
+          value={newBlogData.title}
+          onKeyDown={handleKeyDown}
         />
       </div>
-      <div className="p-4">
+      <div>
         <textarea
+          ref={textareaRef}
           name="content"
           id="content"
           placeholder="Enter your thoughts"
+          className='w-full p-2 focus:outline-none focus:border-transparent resize-none'
           onChange={handleChange}
-          value={blogData.content}
+          value={newBlogData.content}
+          onInput={handleInput}
+          onKeyDown={handleKeyDown}
         ></textarea>
       </div>
     </form>

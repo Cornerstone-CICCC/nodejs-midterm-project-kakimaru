@@ -1,41 +1,45 @@
 import { GoHome } from 'react-icons/go';
 import { MdLanguage } from 'react-icons/md';
 
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 type HeaderProps = {
   onSave: () => Promise<void>;
-  blog: { id: string; userId: string } | null;
   onEdit: () => Promise<void>;
 };
 
-const Header: React.FC<HeaderProps> = ({ onSave, blog, onEdit }) => {
+const Header: React.FC<HeaderProps> = ({ onSave, onEdit }) => {
   const { id } = useParams();
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
-  const { user } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
+
+  // const [canEdit, setCanEdit] = useState(false)
+
   const location = useLocation();
   const isAddPage = location.pathname === '/add';
   const isDetailPage = location.pathname === `/blogs/${id}`;
   const isEditPage = location.pathname === `/blogs/edit/${id}`;
-
-  const canEdit = blog?.userId === user?.userId;
+  const navigate = useNavigate();
 
   async function handleLogout() {
-    try {
-      await fetch(`http://localhost:3000/users/logout`, {
-        method: 'POST',
-        credentials: 'include',
-      });
-      setIsLoggedIn(false);
-    } catch (err) {
-      console.error(`Logout failed:`, err);
-    }
+    await logout();
+    navigate('/');
   }
 
+  // useEffect(function () {
+  //   if (isLoggedIn && blog && user) {
+  //     setCanEdit(blog.userId === user.userId);
+  //   } else {
+  //     setCanEdit(false);
+  //   }
+  // }, [blog, canEdit, isLoggedIn, user]);
+
   return (
-    <header className="fixed top-0 w-full">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white bg-opacity-70 px-3 py-3">
+    <header
+      key={location.pathname}
+      className="fixed top-0 w-full border-b border-slate-200 bg-white bg-opacity-70"
+    >
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-3">
         <Link to={isLoggedIn ? '/blogs' : '/'} className="flex content-center">
           <GoHome size={24} className="text-cyan-700" />
         </Link>
@@ -68,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ onSave, blog, onEdit }) => {
             </Link>
             <Link
               to={`/add`}
-              className="rounded-md bg-cyan-700 px-6 py-2 text-sm text-white"
+              className="rounded-md bg-cyan-700 border border-solid border-cyan-700 px-6 py-2 text-sm text-white"
             >
               Add
             </Link>
@@ -84,17 +88,17 @@ const Header: React.FC<HeaderProps> = ({ onSave, blog, onEdit }) => {
             >
               Log out
             </Link>
-            {canEdit && (
-              <Link
-                to={`/blogs/edit/${id}`}
-                className="rounded-md border border-solid border-cyan-700 bg-white px-6 py-2 text-sm text-cyan-700"
-              >
-                Edit
-              </Link>
-            )}
+
             <Link
-              to={`/add`}
-              className="rounded-md bg-cyan-700 px-6 py-2 text-sm text-white"
+              to={`/blogs/edit/${id}`}
+              className="rounded-md border border-solid border-cyan-700 bg-white px-6 py-2 text-sm text-cyan-700"
+            >
+              Edit
+            </Link>
+
+            <Link
+              to="/add"
+              className="rounded-md bg-cyan-700 border border-solid border-cyan-700 px-6 py-2 text-sm text-white"
             >
               Add
             </Link>
@@ -108,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ onSave, blog, onEdit }) => {
               <p className="text-sm font-bold text-cyan-700">Public</p>
             </div>
             <p
-              className="rounded-md bg-cyan-700 px-6 py-2 text-sm text-white"
+              className="rounded-md bg-cyan-700 border border-solid border-cyan-700 px-6 py-2 text-sm text-white"
               onClick={isEditPage ? onEdit : onSave}
             >
               Save
