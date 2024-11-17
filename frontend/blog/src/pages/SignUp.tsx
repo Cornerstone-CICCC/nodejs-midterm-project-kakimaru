@@ -50,7 +50,7 @@ export default function Register() {
   }
 
   return (
-    <div className="px-6 py-28">
+    <div className="px-6 grid max-w-md w-full mx-auto">
       <h1 className="mb-10 text-center text-3xl font-bold text-cyan-700">
         Sign Up
       </h1>

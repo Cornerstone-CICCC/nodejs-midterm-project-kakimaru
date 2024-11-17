@@ -1,4 +1,7 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 import AppLayout from './components/AppLayout';
 import BlogDetail from './pages/BlogDetail';
 import Home from './pages/Home';
@@ -7,8 +10,11 @@ import SignUp from './pages/SignUp';
 import Login from './pages/LogIn';
 import AddBlog from './pages/AddBlog';
 import { AuthProvider } from './context/AuthContext';
-import PageNotFound from './PageNotFound';
+import PageNotFound from './pages/PageNotFound';
 import BlogEdit from './pages/BlogEdit';
+import PrivateRoute from './pages/PrivateRoute';
+import { BlogProvider } from './context/BlogContext';
+import { BlogsProvider } from './context/BlogsContext';
 
 const router = createBrowserRouter([
   {
@@ -30,29 +36,58 @@ const router = createBrowserRouter([
       },
       {
         path: '/blogs',
-        element: <Blogs />,
+        element: (
+          <PrivateRoute>
+            <Blogs />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/add',
-        element: <AddBlog />,
+        element: (
+          <PrivateRoute>
+            <AddBlog />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/blogs/:id',
-        element: <BlogDetail />,
+        element: (
+          <PrivateRoute>
+            <BlogDetail />
+          </PrivateRoute>
+        ),
       },
       {
         path: '/blogs/edit/:id',
-        element: <BlogEdit />,
+        element: (
+          <PrivateRoute>
+            <BlogEdit />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/404',
+        element: <PageNotFound />,
+      },
+      {
+        path: '*',
+        element: <PageNotFound />,
       },
     ],
   },
 ]);
 
 function App() {
+
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <BlogsProvider>
+      <BlogProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </BlogProvider>
+    </BlogsProvider>
   );
 }
 

@@ -30,8 +30,6 @@ export default function Login() {
     }));
   }
 
-  console.log(formData)
-
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
     setIsSubmitting(true);
@@ -47,7 +45,7 @@ export default function Login() {
       });
 
       const data = await res.json();
-      console.log(data);
+      console.log(data)
 
       if (res.ok) {
         setIsLoggedIn(true)
@@ -60,7 +58,7 @@ export default function Login() {
     }
   }
   return (
-    <div className="px-6 py-28">
+    <div className="px-6 grid max-w-md w-full mx-auto">
       <h1 className="mb-10 text-center text-3xl font-bold text-cyan-700">
         Log In
       </h1>

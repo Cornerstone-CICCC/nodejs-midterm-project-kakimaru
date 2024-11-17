@@ -78,19 +78,10 @@ const checkLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.json({ loggedIn: false });
     }
 });
-// // profile
-// const userProfile = (req: Request, res: Response) => {
-//   const { userId } = req.session;
-//   const user = userModel.findById(userId);
-//   if (!user) {
-//     res.json({ message: "User not fond" });
-//     return;
-//   }
-//   res.json(user);
-// };
 // logout
 const logoutUser = (req, res) => {
     req.session = { isAuthenticated: false, userId: "" };
+    res.clearCookie('connect.sid');
     res.send({ message: `Lodded out successful` });
 };
 exports.default = {

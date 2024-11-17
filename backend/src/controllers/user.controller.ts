@@ -86,20 +86,10 @@ const checkLogin = async (req: Request, res: Response) => {
   }
 };
 
-// // profile
-// const userProfile = (req: Request, res: Response) => {
-//   const { userId } = req.session;
-//   const user = userModel.findById(userId);
-//   if (!user) {
-//     res.json({ message: "User not fond" });
-//     return;
-//   }
-//   res.json(user);
-// };
-
 // logout
 const logoutUser = (req: Request, res: Response) => {
   req.session = { isAuthenticated: false, userId: "" };
+  res.clearCookie('connect.sid');
   res.send({ message: `Lodded out successful` });
 };
 
